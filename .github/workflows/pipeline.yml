@@ -1,0 +1,43 @@
+name: Pipeline Calculatrice Dorade
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v3
+
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Lancer les tests
+        run: python3 -c "
+          from calculatrice import additionner, soustraire, multiplier, diviser
+          assert additionner(10, 5) == 15
+          assert soustraire(10, 5) == 5
+          assert multiplier(10, 5) == 50
+          assert diviser(10, 5) == 2.0
+          assert diviser(10, 0) == 'Erreur : division par zéro'
+          print('Tous les tests sont passés !')
+          "
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v3
+
+      - name: Construire l'image Docker
+        run: docker build -t calculatrice-dorade .
+
+      - name: Vérifier l'image
+        run: docker images calculatrice-dorade

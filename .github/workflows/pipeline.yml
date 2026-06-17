@@ -10,22 +10,22 @@ jobs:
 
     steps:
       - name: Récupérer le code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Installer Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
       - name: Lancer les tests
         run: |
           python3 -c "
-          from calculatrice import additionner, soustraire, multiplier, diviser
-          assert additionner(10, 5) == 15
-          assert soustraire(10, 5) == 5
-          assert multiplier(10, 5) == 50
-          assert diviser(10, 5) == 2.0
-          assert diviser(10, 0) == 'Erreur : division par zéro'
+          import calculatrice
+          assert calculatrice.additionner(10, 5) == 15
+          assert calculatrice.soustraire(10, 5) == 5
+          assert calculatrice.multiplier(10, 5) == 50
+          assert calculatrice.diviser(10, 5) == 2.0
+          assert calculatrice.diviser(10, 0) == 'Erreur : division par zéro'
           print('Tous les tests sont passés !')
           "
 
@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Récupérer le code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Construire l'image Docker
         run: docker build -t calculatrice-dorade .

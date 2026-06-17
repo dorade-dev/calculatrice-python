@@ -18,7 +18,8 @@ jobs:
           python-version: '3.9'
 
       - name: Lancer les tests
-        run: python3 -c "
+        run: |
+          python3 -c "
           from calculatrice import additionner, soustraire, multiplier, diviser
           assert additionner(10, 5) == 15
           assert soustraire(10, 5) == 5
